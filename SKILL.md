@@ -49,14 +49,19 @@ Send the pagedrop.ai URL. Works on phone, tablet, desktop.
 
 ### 3. Iterate
 
-To update, delete the old gist and create a new one:
+Edit the gist in place to preserve revision history:
 
 ```bash
-gh gist delete OLD_GIST_ID --yes
-gh gist create /tmp/preview.html -d "Description v2"
+gh gist edit GIST_ID -f /tmp/preview.html
 ```
 
-Pagedrop caches for 5 minutes. For immediate updates, create a new gist.
+GitHub keeps all revisions — accessible via the gist's "Revisions" tab or API.
+
+**Cache behavior:**
+- `/g/USER/GIST_ID` — latest version (cached 5 min)
+- `/g/USER/GIST_ID/SHA` — specific revision (cached indefinitely, immutable)
+
+For instant preview of edits, use a revision URL with the new SHA.
 
 ## Annotations
 
