@@ -1,6 +1,6 @@
 ---
 name: webdrop
-description: Render complex content as shareable web pages for visual collaboration outside the chat. Use when building documents, PRs, architecture diagrams, or anything that needs structure — then get Google Docs-style feedback via annotations.
+description: Create shareable HTML pages for instant mobile preview and visual collaboration. Use when building documents, visualizations, or anything that needs structure — view it in a browser from any device, then iterate with Google Docs-style annotations.
 ---
 
 # Webdrop
