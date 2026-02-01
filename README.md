@@ -40,8 +40,8 @@ cat > /tmp/preview.html << 'EOF'
 </html>
 EOF
 
-# Upload and get preview URL
-gh gist create /tmp/preview.html --public
+# Upload and get preview URL (secret gist, not listed on profile)
+gh gist create /tmp/preview.html
 # Gist: https://gist.github.com/USER/GIST_ID
 # Pagedrop: https://pagedrop.ai/g/USER/GIST_ID
 ```

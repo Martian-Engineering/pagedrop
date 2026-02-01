@@ -36,8 +36,10 @@ Always include the annotation script for feedback.
 ### 2. Upload and share
 
 ```bash
-gh gist create /tmp/preview.html --public -d "Description"
+gh gist create /tmp/preview.html -d "Description"
 ```
+
+Note: Gists are created as **secret** by default (not listed on profile, not indexed). Anyone with the pagedrop.ai link can still view.
 
 Convert the gist URL to a pagedrop URL:
 - Gist: `https://gist.github.com/USER/GIST_ID`
@@ -51,7 +53,7 @@ To update, delete the old gist and create a new one:
 
 ```bash
 gh gist delete OLD_GIST_ID --yes
-gh gist create /tmp/preview.html --public -d "Description v2"
+gh gist create /tmp/preview.html -d "Description v2"
 ```
 
 Pagedrop caches for 5 minutes. For immediate updates, create a new gist.
@@ -102,7 +104,7 @@ The format includes:
 ## Notes
 
 - **Self-contained HTML** — inline all CSS/JS to avoid CORS issues
-- **Gists are public** — don't include secrets or sensitive data
+- **Secret gists** — not on profile or indexed, but anyone with the link can view
 - **Annotations are client-side** — stored in localStorage, no backend needed
 - **Mobile-friendly** — annotation button positioned for thumb reach
 - **You own your content** — gists stay in your GitHub, pagedrop just proxies
