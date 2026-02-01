@@ -25,7 +25,7 @@ cat > /tmp/preview.html << 'EOF'
 </head>
 <body>
   <!-- content -->
-  <script src="https://gist.githack.com/jalehman/3c031225cb70b73fe080f60f1b174cce/raw/annotate.js"></script>
+  <script src="https://pagedrop.ai/g/jalehman/3c031225cb70b73fe080f60f1b174cce"></script>
 </body>
 </html>
 EOF
@@ -39,11 +39,11 @@ Always include the annotation script for feedback.
 gh gist create /tmp/preview.html --public -d "Description"
 ```
 
-Convert the gist URL to a preview URL:
-- Gist: `https://gist.github.com/USER/HASH`
-- Preview: `https://gist.githack.com/USER/HASH/raw/preview.html`
+Convert the gist URL to a pagedrop URL:
+- Gist: `https://gist.github.com/USER/GIST_ID`
+- Pagedrop: `https://pagedrop.ai/g/USER/GIST_ID`
 
-Send the githack URL. Works on phone, tablet, desktop.
+Send the pagedrop.ai URL. Works on phone, tablet, desktop.
 
 ### 3. Iterate
 
@@ -54,7 +54,7 @@ gh gist delete OLD_GIST_ID --yes
 gh gist create /tmp/preview.html --public -d "Description v2"
 ```
 
-This guarantees fresh content (githack caches aggressively).
+Pagedrop caches for 5 minutes. For immediate updates, create a new gist.
 
 ## Annotations
 
@@ -105,3 +105,4 @@ The format includes:
 - **Gists are public** — don't include secrets or sensitive data
 - **Annotations are client-side** — stored in localStorage, no backend needed
 - **Mobile-friendly** — annotation button positioned for thumb reach
+- **You own your content** — gists stay in your GitHub, pagedrop just proxies
