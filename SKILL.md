@@ -25,13 +25,12 @@ cat > /tmp/preview.html << 'EOF'
 </head>
 <body>
   <!-- content -->
-  <script src="https://pagedrop.ai/g/jalehman/3c031225cb70b73fe080f60f1b174cce"></script>
 </body>
 </html>
 EOF
 ```
 
-Always include the annotation script for feedback.
+**No need to add annotation scripts** — pagedrop.ai automatically injects the revision and annotation UI.
 
 ### 2. Upload and share
 
@@ -47,7 +46,24 @@ Convert the gist URL to a pagedrop URL:
 
 Send the pagedrop.ai URL. Works on phone, tablet, desktop.
 
-### 3. Iterate
+### 3. Share Links
+
+For sharing with others, use the **Share** button in the revision bar to generate a share link:
+- `/s/TOKEN` — share link with configurable settings
+
+Share links let you control what viewers see:
+- **Show annotations** — enable/disable annotation UI
+- **Show revisions** — enable/disable revision navigation
+
+Or create programmatically:
+
+```bash
+curl -X POST "https://pagedrop.ai/api/share" \
+  -H "Content-Type: application/json" \
+  -d '{"gist_user": "USER", "gist_id": "GIST_ID", "settings": {"annotations": true, "revisions": true}}'
+```
+
+### 4. Iterate
 
 Edit the gist in place to preserve revision history:
 
@@ -55,17 +71,16 @@ Edit the gist in place to preserve revision history:
 gh gist edit GIST_ID -f /tmp/preview.html
 ```
 
-GitHub keeps all revisions — accessible via the gist's "Revisions" tab or API.
+GitHub keeps all revisions — accessible via the revision bar or API.
 
 **Cache behavior:**
-- `/g/USER/GIST_ID` — latest version (cached 5 min)
-- `/g/USER/GIST_ID/SHA` — specific revision (cached indefinitely, immutable)
-
-For instant preview of edits, use a revision URL with the new SHA.
+- `/g/USER/GIST_ID` — latest version (cached ~5 min)
+- `/g/USER/GIST_ID/SHA` — specific revision (cached longer, immutable)
+- `/s/TOKEN` — share link (cached ~1 min)
 
 ## Annotations
 
-The annotation script enables inline feedback:
+The annotation UI is automatically injected on pagedrop.ai pages:
 
 1. **User selects text** → "Annotate" button appears
 2. **Add comment** → saved to localStorage with location context
@@ -110,6 +125,7 @@ The format includes:
 
 - **Self-contained HTML** — inline all CSS/JS to avoid CORS issues
 - **Secret gists** — not on profile or indexed, but anyone with the link can view
-- **Annotations are client-side** — stored in localStorage, no backend needed
+- **Annotations are client-side** — stored in localStorage per page
 - **Mobile-friendly** — annotation button positioned for thumb reach
 - **You own your content** — gists stay in your GitHub, pagedrop just proxies
+- **Share links** — control annotations/revisions visibility for viewers
