@@ -1,9 +1,9 @@
 ---
-name: webdrop
+name: pagedrop
 description: Create shareable HTML pages for instant mobile preview and visual collaboration. Use when building documents, visualizations, or anything that needs structure — view it in a browser from any device, then iterate with Google Docs-style annotations.
 ---
 
-# Webdrop
+# Pagedrop
 
 Escape the chat window. Render complex content as a shareable web page, get structured feedback via annotations.
 

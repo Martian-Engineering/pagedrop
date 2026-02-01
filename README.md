@@ -1,8 +1,8 @@
-# Webdrop
+# Pagedrop
 
 Render complex content as shareable web pages for visual collaboration outside the chat.
 
-When ideas get complex — PRs, architecture diagrams, documents — text threads break down. Webdrop renders them as pages you can see, annotate, and iterate on.
+When ideas get complex — PRs, architecture diagrams, documents — text threads break down. Pagedrop renders them as pages you can see, annotate, and iterate on.
 
 ## How it works
 
