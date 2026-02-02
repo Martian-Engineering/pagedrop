@@ -11,23 +11,27 @@ Escape the chat window. Render complex content as a shareable web page, get stru
 
 ### 1. Create the HTML
 
-Write self-contained HTML (inline CSS/JS). Save to a temp file:
+Write self-contained HTML (inline CSS/JS). Save to a temp file.
+
+**Default template** — use Pico CSS dark theme as the base:
 
 ```bash
-cat > /tmp/preview.html << 'EOF'
+cat > /tmp/preview.html << 'HTMLEOF'
 <!DOCTYPE html>
-<html>
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Preview</title>
-  <style>/* inline styles */</style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 </head>
 <body>
-  <!-- content -->
+  <main class="container">
+    <!-- content -->
+  </main>
 </body>
 </html>
-EOF
+HTMLEOF
 ```
 
 **No need to add annotation scripts** — pagedrop.ai automatically injects the revision and annotation UI.
@@ -78,12 +82,203 @@ GitHub keeps all revisions — accessible via the revision bar or API.
 - `/g/USER/GIST_ID/SHA` — specific revision (cached longer, immutable)
 - `/s/TOKEN` — share link (cached ~1 min)
 
+---
+
+## Recommended Libraries
+
+Only include libraries when the content needs them. All available via CDN — no build step.
+
+### 🎨 Pico CSS — Base Styling (always include)
+
+Classless semantic CSS. Write HTML, get beautiful output. **Default to dark theme.**
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+```
+
+**Theming:**
+- `<html data-theme="dark">` — dark theme (default for drops)
+- `<html data-theme="light">` — light theme
+- `<html data-theme="auto">` — follows OS preference
+
+Pico handles typography, tables, forms, buttons, cards, and layout with zero classes. Just use semantic HTML (`<table>`, `<article>`, `<details>`, `<form>`, etc.).
+
+**When to use:** Always. It's the base layer.
+
+**When to skip:** Only if the content demands a fully custom aesthetic (dashboards, landing pages with specific brand styling).
+
+### 🧜 Mermaid — Architecture & Flow Diagrams
+
+Flowcharts, sequence diagrams, ERDs, state machines, Gantt charts, and more.
+
+```html
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'dark', securityLevel: 'loose' });
+</script>
+```
+
+Usage in HTML:
+```html
+<pre class="mermaid">
+graph TD
+    A[User] -->|visits| B[CloudFront]
+    B --> C[Lambda@Edge]
+    C --> D[GitHub Gist]
+</pre>
+```
+
+**Theme consistency:** Use `theme: 'dark'` with Pico dark, `theme: 'default'` with Pico light.
+
+**When to use:** Architecture diagrams, flowcharts, sequence diagrams, ERDs, state machines, timelines.
+
+### 📊 Chart.js — Charts & Plots
+
+Simple, responsive charts with beautiful defaults.
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+```
+
+Usage:
+```html
+<canvas id="myChart"></canvas>
+<script>
+new Chart(document.getElementById('myChart'), {
+  type: 'bar',  // bar, line, pie, doughnut, radar, scatter, bubble
+  data: {
+    labels: ['Jan', 'Feb', 'Mar'],
+    datasets: [{
+      label: 'Revenue',
+      data: [12, 19, 3],
+      backgroundColor: 'rgba(88, 166, 255, 0.7)',
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { labels: { color: '#c9d1d9' } } },
+    scales: {
+      x: { ticks: { color: '#8b949e' }, grid: { color: '#30363d' } },
+      y: { ticks: { color: '#8b949e' }, grid: { color: '#30363d' } }
+    }
+  }
+});
+</script>
+```
+
+**Theme consistency (dark):** Set `color: '#c9d1d9'` for labels, `color: '#8b949e'` for ticks, `color: '#30363d'` for grid lines. For light theme, omit these (Chart.js defaults are light-friendly).
+
+**When to use:** Bar charts, line charts, pie/doughnut, scatter plots, radar charts. Any time there's numeric data to visualize.
+
+### 💻 Prism.js — Syntax Highlighting
+
+VS Code-quality code rendering. 300+ languages.
+
+```html
+<!-- Dark theme (matches Pico dark) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+
+<!-- Light theme (matches Pico light) -->
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<!-- Add languages as needed -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-typescript.min.js"></script>
+```
+
+Usage:
+```html
+<pre><code class="language-javascript">
+const greeting = "Hello, world!";
+console.log(greeting);
+</code></pre>
+```
+
+**Theme consistency:**
+- Pico dark → `prism-tomorrow.min.css` (dark background, light text)
+- Pico light → `prism.min.css` (light background, dark text)
+
+**When to use:** Any content containing code snippets. Skip if there's no code.
+
+### 🧮 KaTeX — Math Rendering
+
+Fast LaTeX math. Way faster than MathJax.
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+```
+
+Usage:
+```html
+<!-- Display math -->
+<div id="equation"></div>
+<script>
+  katex.render('E = mc^2', document.getElementById('equation'), { displayMode: true });
+</script>
+
+<!-- Or use auto-render for LaTeX in text -->
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>renderMathInElement(document.body);</script>
+```
+
+With auto-render, use `$$...$$` for display math and `\(...\)` for inline math directly in HTML text.
+
+**Theme consistency:** KaTeX inherits text color from CSS — works with both Pico dark and light automatically.
+
+**When to use:** Math equations, formulas, technical papers, scientific content. Skip if there's no math.
+
+---
+
+## Theme Consistency Cheat Sheet
+
+| Library | Dark mode setting | Light mode setting |
+|---------|------------------|--------------------|
+| Pico CSS | `data-theme="dark"` | `data-theme="light"` |
+| Mermaid | `theme: 'dark'` | `theme: 'default'` |
+| Chart.js | Custom colors (see above) | Default colors |
+| Prism.js | `prism-tomorrow.min.css` | `prism.min.css` |
+| KaTeX | Automatic (inherits) | Automatic (inherits) |
+
+**Rule:** Pick dark or light, then match ALL libraries to that choice. Don't mix.
+
+---
+
+## Library Selection Guide
+
+**Include only what the content needs:**
+
+| Content type | Libraries to include |
+|-------------|---------------------|
+| Text/docs only | Pico CSS |
+| Has code snippets | + Prism.js |
+| Has data/metrics | + Chart.js |
+| Has architecture/flows | + Mermaid |
+| Has math/equations | + KaTeX |
+| Dashboard with custom look | Skip Pico, use custom CSS |
+
+**Size budget (gzipped):**
+| Library | Size |
+|---------|------|
+| Pico CSS | ~10 KB |
+| Mermaid | ~300 KB |
+| Chart.js | ~70 KB |
+| Prism.js | ~6 KB + langs |
+| KaTeX | ~90 KB |
+
+A typical drop with all libraries loads in <500 KB. Most drops need only Pico + one other.
+
+---
+
 ## Annotations
 
 The annotation UI is automatically injected on pagedrop.ai pages:
 
 1. **User selects text** → "Annotate" button appears
-2. **Add comment** → saved to localStorage with location context
+2. **Add comment** → saved with location context
 3. **Click "Finish"** → exports structured markdown
 4. **Paste in chat** → agent addresses each point
 
@@ -105,15 +300,6 @@ The annotation UI is automatically injected on pagedrop.ai pages:
 This is the key win — call it out more prominently!
 
 ---
-
-### 2.
-📍 Table Row 2, Column 3 · Section: "Benchmarks"
-
-> 120ms
-
-Can we get this under 100ms?
-
----
 ```
 
 The format includes:
@@ -123,9 +309,8 @@ The format includes:
 
 ## Notes
 
-- **Self-contained HTML** — inline all CSS/JS to avoid CORS issues
-- **Secret gists** — not on profile or indexed, but anyone with the link can view
-- **Annotations are client-side** — stored in localStorage per page
+- **Self-contained HTML** — inline all CSS/JS to avoid CORS issues (CDN links are fine)
+- **Secret gists** — not on profile or indexed, but anyone with the pagedrop.ai link can view
 - **Mobile-friendly** — annotation button positioned for thumb reach
 - **You own your content** — gists stay in your GitHub, pagedrop just proxies
 - **Share links** — control annotations/revisions visibility for viewers
