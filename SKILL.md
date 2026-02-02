@@ -287,24 +287,33 @@ The annotation UI is automatically injected on pagedrop.ai pages:
 ```markdown
 ## Preview Feedback
 **Preview:** Document Title
-**Date:** 1/31/2026, 7:44:30 PM
+**Date:** 2/1/2026, 7:44:30 PM
 **Annotations:** 3
 
 ---
 
-### 1.
+### 1. [by @jalehman]
 📍 Section: "Performance Results"
 
-...reduced latency across all endpoints. **[Redis caching reduced validate latency by 87%]**, making auth nearly invisible...
+> ...reduced latency across all endpoints. Redis caching reduced validate latency by 87%, making auth nearly invisible...
 
 This is the key win — call it out more prominently!
+
+---
+
+### 2. [by @collaborator]
+
+> Sort key: UUID annotation ID
+
+Another annotation
 
 ---
 ```
 
 The format includes:
+- **Author attribution** (`[by @username]` or `[by Anonymous]`)
 - **Location context** (section heading, table position, code block)
-- **Surrounding text** with selection highlighted in bold brackets
+- **Selected text** as blockquote
 - **User's comment**
 
 ## Notes
