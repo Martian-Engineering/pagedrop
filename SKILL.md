@@ -39,8 +39,10 @@ HTMLEOF
 ### 2. Upload and share
 
 ```bash
-gh gist create /tmp/preview.html -d "Description"
+gh gist create /tmp/preview.html -d "Description #pagedrop"
 ```
+
+**Always include `#pagedrop` in the description** — this tags it as a drop so it appears in the user's profile.
 
 Note: Gists are created as **secret** by default (not listed on profile, not indexed). Anyone with the pagedrop.ai link can still view.
 
