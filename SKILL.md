@@ -311,6 +311,7 @@ The format includes:
 
 - **Self-contained HTML** — inline all CSS/JS to avoid CORS issues (CDN links are fine)
 - **Secret gists** — not on profile or indexed, but anyone with the pagedrop.ai link can view
+- **Annotations** — auto-injected by pagedrop.ai. Persistent for Pro users, localStorage for free
 - **Mobile-friendly** — annotation button positioned for thumb reach
 - **You own your content** — gists stay in your GitHub, pagedrop just proxies
 - **Share links** — control annotations/revisions visibility for viewers
