@@ -11,12 +11,22 @@ Escape the chat window. Render complex content as a shareable web page, get stru
 
 ### 1. Create the HTML
 
-Write self-contained HTML (inline CSS/JS). Save to a temp file.
+Write self-contained HTML (inline CSS/JS). Save to a **persistent local file** using the naming convention:
+
+```
+/tmp/<date>-<subject>-<gist_id>.html
+```
+
+- `<date>` — today's date, e.g. `2026-02-05`
+- `<subject>` — short slug describing the content, e.g. `api-architecture`, `quarterly-report`
+- `<gist_id>` — the GitHub Gist ID (assigned after first upload). On initial creation, omit this and add it after uploading.
+
+**Why:** Using the Gist ID in the filename creates a direct lookup — when annotation feedback references a gist ID, you can find the exact local file to edit. This also lets you make targeted edits instead of regenerating the entire document, which is faster and cheaper.
 
 **Default template** — use Pico CSS dark theme as the base:
 
 ```bash
-cat > /tmp/preview.html << 'HTMLEOF'
+cat > /tmp/2026-02-05-my-preview.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -39,10 +49,18 @@ HTMLEOF
 ### 2. Upload and share
 
 ```bash
-gh gist create /tmp/preview.html -d "Description #pagedrop"
+gh gist create /tmp/2026-02-05-my-preview.html -d "Description #pagedrop"
 ```
 
 **Always include `#pagedrop` in the description** — this tags it as a drop so it appears in the user's profile.
+
+After creating, capture the Gist ID from the output URL and rename the local file:
+
+```bash
+mv /tmp/2026-02-05-my-preview.html /tmp/2026-02-05-my-preview-abc123def456.html
+```
+
+Now the filename contains the Gist ID — a direct lookup when annotation feedback references this gist.
 
 Note: Gists are created as **secret** by default (not listed on profile, not indexed). Anyone with the pagedrop.ai link can still view.
 
@@ -71,11 +89,13 @@ curl -X POST "https://pagedrop.ai/api/share" \
 
 ### 4. Iterate
 
-Edit the gist in place to preserve revision history:
+Edit the local file in place (use targeted edits — no need to rewrite the whole document), then push the update:
 
 ```bash
-gh gist edit GIST_ID -f /tmp/preview.html
+gh gist edit GIST_ID -f /tmp/2026-02-05-my-preview-GIST_ID.html
 ```
+
+**Key:** Because the file persists at a known path, you can make surgical edits to specific sections rather than regenerating the full HTML each turn. This saves tokens and preserves any manual tweaks.
 
 GitHub keeps all revisions — accessible via the revision bar or API.
 
