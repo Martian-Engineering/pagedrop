@@ -46,6 +46,49 @@ gh gist create /tmp/preview.html -d "Description #pagedrop"
 
 Note: Gists are created as **secret** by default (not listed on profile, not indexed). Anyone with the pagedrop.ai link can still view.
 
+### 2a. Host Images/Assets (Public GitHub Repo)
+
+If your drop needs images or other static assets, put them in a **public** GitHub repo (so viewers can load them). Convention:
+- `drops/<gist_id>/...` (no timestamps)
+
+Copy/paste (example uses `GIST_ID`):
+
+```bash
+# 0) Set your gist id (from https://gist.github.com/USER/GIST_ID)
+export GIST_ID="GIST_ID"
+
+# 1) Create the public assets repo (one-time; skip if it already exists)
+gh repo create Martian-Engineering/pagedrop-assets --public --confirm
+
+# 2) Clone it locally (one-time)
+cd ~/Projects
+git clone git@github.com:Martian-Engineering/pagedrop-assets.git
+
+# 3) Add assets for this drop
+cd ~/Projects/pagedrop-assets
+mkdir -p "drops/$GIST_ID"
+cp /path/to/image.png "drops/$GIST_ID/"
+
+# 4) Commit + push
+git add "drops/$GIST_ID"
+git commit -m "Add assets for $GIST_ID"
+git push
+```
+
+Raw URL pattern (replace the filename):
+- `https://raw.githubusercontent.com/Martian-Engineering/pagedrop-assets/main/drops/GIST_ID/image.png`
+- Or: open the file on GitHub and click **Raw**
+
+In your HTML:
+```html
+<img src="https://raw.githubusercontent.com/Martian-Engineering/pagedrop-assets/main/drops/GIST_ID/image.png" alt="Example">
+```
+
+In your Markdown:
+```md
+![Example](https://raw.githubusercontent.com/Martian-Engineering/pagedrop-assets/main/drops/GIST_ID/image.png)
+```
+
 Convert the gist URL to a pagedrop URL:
 - Gist: `https://gist.github.com/USER/GIST_ID`
 - Pagedrop: `https://pagedrop.ai/g/USER/GIST_ID`
