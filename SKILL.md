@@ -64,6 +64,51 @@ Now the filename contains the Gist ID — a direct lookup when annotation feedba
 
 Note: Gists are created as **secret** by default (not listed on profile, not indexed). Anyone with the pagedrop.ai link can still view.
 
+### 2a. Host Images/Assets (Public GitHub Repo)
+
+If your drop needs images or other static assets, put them in a **public** GitHub repo (so viewers can load them). Convention:
+- `drops/<gist_id>/...` (no timestamps)
+
+Copy/paste (example uses placeholders):
+
+```bash
+# 0) Set your gist id (from https://gist.github.com/<USER>/<GIST_ID>)
+export GIST_ID="<GIST_ID>"
+
+# 1) Create (or choose) a public assets repo (one-time; skip if it already exists)
+export ORG="<ORG>"
+export REPO="<REPO>" # e.g. "pagedrop-assets"
+gh repo create "$ORG/$REPO" --public --confirm
+
+# 2) Clone it locally (one-time) into any folder you want
+export ASSETS_DIR="/path/to/local/assets-repo"
+git clone "git@github.com:$ORG/$REPO.git" "$ASSETS_DIR"
+
+# 3) Add assets for this drop
+cd "$ASSETS_DIR"
+mkdir -p "drops/$GIST_ID"
+cp "/path/to/<FILE>" "drops/$GIST_ID/"
+
+# 4) Commit + push
+git add "drops/$GIST_ID"
+git commit -m "Add assets for $GIST_ID"
+git push
+```
+
+Raw URL pattern (replace the filename):
+- `https://raw.githubusercontent.com/<ORG>/<REPO>/<BRANCH>/drops/<GIST_ID>/<FILE>`
+- Or: open the file on GitHub and click **Raw**
+
+In your HTML:
+```html
+<img src="https://raw.githubusercontent.com/<ORG>/<REPO>/<BRANCH>/drops/<GIST_ID>/<FILE>" alt="Example">
+```
+
+In your Markdown:
+```md
+![Example](https://raw.githubusercontent.com/<ORG>/<REPO>/<BRANCH>/drops/<GIST_ID>/<FILE>)
+```
+
 Convert the gist URL to a pagedrop URL:
 - Gist: `https://gist.github.com/USER/GIST_ID`
 - Pagedrop: `https://pagedrop.ai/g/USER/GIST_ID`
