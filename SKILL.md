@@ -134,11 +134,15 @@ curl -X POST "https://pagedrop.ai/api/share" \
 
 ### 4. Iterate
 
-Edit the local file in place (use targeted edits — no need to rewrite the whole document), then push the update:
+Edit the local file in place (use targeted edits — no need to rewrite the whole document), then push the update. The `-f` flag takes the **gist filename** (not the local path), followed by the local source file:
 
 ```bash
-gh gist edit GIST_ID -f /tmp/2026-02-05-my-preview-GIST_ID.html
+gh gist edit GIST_ID -f my-preview.html /tmp/2026-02-05-my-preview-GIST_ID.html
+#                       ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#                       gist filename     local source file
 ```
+
+**Tip:** If you're unsure of the gist filename, list it first with `gh gist view GIST_ID --files`.
 
 **Key:** Because the file persists at a known path, you can make surgical edits to specific sections rather than regenerating the full HTML each turn. This saves tokens and preserves any manual tweaks.
 
